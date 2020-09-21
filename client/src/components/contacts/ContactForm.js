@@ -1,0 +1,100 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+import Contacts from './Contacts';
+
+const ContactForm = ({contact, ...props}) => {
+  // const [ name, setName ] = useState( contact ? contact.name : "");
+  // const [ phone, setPhone ] = useState( contact ? contact.phone : "");
+
+  const [ values, setValues ] = useState(
+    
+      { 
+        name: contact ? contact.name : "",
+        phone: contact ? contact.phone : "",
+        url: contact ? contact.url : "",
+        details: contact ? contact.details : "",
+      }
+    
+    )
+
+  const handleChange = (e) => {
+    // setName(e.target.value)
+    // e.target.name
+    let name = e.target.name
+    let value = e.target.value
+    console.log(name, value)
+    // setValues(values.e.target.name, ...values)
+    // setValues()
+    setValues({...values, [name]: value})
+  }  
+
+  console.log(values)
+  const handleSubmit = (e) => {
+    
+    e.preventDefault()
+    
+    if (contact) {
+
+      // axios.patch(`/api/contacts/${contact.id}`, {name: name})
+      axios.patch(`/api/contacts/${contact.id}`, {...values})
+
+      .then(res => {
+        props.updateContact(res.data)
+        props.setEditing(false)
+      })
+      .catch(console.log)
+    } else {
+
+      // axios.post('/api/contacts', {name: name})
+      axios.post('/api/contacts', {...values})
+
+      .then(res => {
+        props.addContact(res.data)
+        // setName("")
+        setValues({
+          name: "",
+          phone: "",
+          url: "",
+          details: "",
+        })
+      })
+      .catch(console.log)
+    }
+
+  }
+
+  return (
+   <Wrapper>
+    <strong>
+      {contact ? "Editing" : "New"} Contact
+    </strong>
+
+    <form onSubmit={handleSubmit}> 
+      <label>Name</label>
+      <input type="text" name="name" value={values.name} onChange={handleChange}/>
+      <div>
+        <label>Phone</label>
+        <input type="text" name="phone" value={values.phone} onChange={handleChange}/>
+      </div>
+      <div>
+        <label>Url</label>
+        <input type="text" name="url" value={values.url} onChange={handleChange}/>
+      </div>
+      <div>
+        <label>Details</label>
+        <textarea name="details" value={values.details} onChange={handleChange}/>
+      </div>
+      <div>
+        <input type="submit"></input>
+      </div>
+    </form>
+   </Wrapper>
+  )
+}
+
+
+const Wrapper = styled.div`
+  padding: 1rem;
+`
+export default ContactForm
