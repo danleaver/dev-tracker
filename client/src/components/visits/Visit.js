@@ -21,7 +21,7 @@ const Visit = ({visit, contact, ...props}) => {
 
   return (
    <Wrapper>
-      {visit.date}
+      {visit.date.split("T")[0]} {/* shouldn't need the split */}
       <br/>
       {visit.details} 
       <div>
@@ -33,6 +33,7 @@ const Visit = ({visit, contact, ...props}) => {
    </Wrapper>
   )
 }
+
 
 
 const Wrapper = styled.div`

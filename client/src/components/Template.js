@@ -4,16 +4,12 @@ import axios from 'axios';
 
 const Template = () => {
 
-  
-
   return (
    <Wrapper>
   HELLO Template
-    
    </Wrapper>
   )
 }
-
 
 const Wrapper = styled.div`
   padding: 1rem;
