@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import PunchCard from './PunchCard';
+import PunchCard from './punchcard/PunchCard';
 import DailyTotal from './DailyTotal';
 
 const ClockList = ({newClock, ...props}) => {
@@ -30,6 +30,15 @@ const ClockList = ({newClock, ...props}) => {
     }
   }, [newClock])
 
+  const updatePunchCard = (updatedClock) => {
+    setClockList(clockList.map( a => {
+      if (a.id === updatedClock.id) {
+        return updatedClock
+      } else return a
+    })
+    )
+  }
+
   return (
    <Wrapper>
     { clockList && (clockList.length === 0) && "Nothing to see here.."} 
@@ -37,7 +46,7 @@ const ClockList = ({newClock, ...props}) => {
       <>
         <DailyTotal clockList={clockList}/>
         {clockList.map(clock => (
-          <PunchCard key={clock.id} clock={clock}/>
+          <PunchCard key={clock.id} clock={clock} updatePunchCard={updatePunchCard}/>
         ))}
       </>
     }
