@@ -39,13 +39,11 @@ const Contact = ({contact, ...props}) => {
        </InfoLeft>
        <InfoRight>
          <a href={contact.url}>{contact.url}</a>
-
           <div>
            {contact.details}
           </div>
        </InfoRight>
      </Flex>
-
     <div>
       <button onClick={handleVisit}>Visits</button>
       {showVisits && <Visits contact={contact}/>}
@@ -62,19 +60,15 @@ const Contact = ({contact, ...props}) => {
 const InfoLeft = styled.div`
   width: 300px;
 `
-
 const InfoRight = styled.div`
-
   width: 300px;
 `
 const Flex = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
 `
 const Wrapper = styled.div`
   padding: 1rem;
-  
 `
 export default Contact

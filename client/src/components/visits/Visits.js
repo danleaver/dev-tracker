@@ -7,9 +7,6 @@ import VisitForm from './VisitForm';
 const Visits = ({contact, ...props}) => {
   const [ visits, setVisits ] = useState([]);
   useEffect(() => {
-    // axios.post(`/api/contacts/${contact.id}/visits`, {details: "testing", contact_id: contact.id})
-    //   .then(console.log)
-    //   .catch(console.log)
     axios.get(`/api/contacts/${contact.id}/visits`)
       .then(res => setVisits(res.data))
       .catch(console.log)
@@ -42,10 +39,9 @@ const Visits = ({contact, ...props}) => {
   )
 }
 
-
 const Wrapper = styled.div`
   padding: 1rem;
   padding-left: 10rem;
-
 `
+
 export default Visits

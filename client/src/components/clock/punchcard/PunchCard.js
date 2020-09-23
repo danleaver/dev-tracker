@@ -10,7 +10,6 @@ const PunchCard = ({clock, ...props}) => {
     setEditing(!editing)
   }
 
-
   return (
     <>
       <Wrapper>
@@ -26,7 +25,6 @@ const PunchCard = ({clock, ...props}) => {
           clock={clock}
         /> 
       }
-
     </>
   )
 }
@@ -39,6 +37,5 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: space-between;
   padding: 1rem;
-  // width: 500px;
 `
 export default PunchCard

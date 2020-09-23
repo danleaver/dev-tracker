@@ -20,22 +20,22 @@ const Clock = () => {
   }, [])
 
   useEffect(() => {
-    if (currentClock && !currentClock.time_out) { //if there is a clockIn, and no clockOut
+    if (currentClock && !currentClock.time_out) { 
       setClockedIn(true)
       let d = new Date(currentClock.time_in).toLocaleString()
       setStartTime(d)
-    } else {                      //this is what happens when you clock out
+    } else { 
       setClockedIn(false)
     }
   }, [currentClock])
 
   const toggleClock = () => {
     if (!clockedIn) {
-      axios.post('/api/clocks', {time_in: new Date()}) //clocking IN
+      axios.post('/api/clocks', {time_in: new Date()}) 
         .then(res => setCurrentClock(res.data))
         .catch(console.log)
     } else {
-      axios.patch(`api/clocks/${currentClock.id}`, {time_out: new Date()}) //clocking OUT
+      axios.patch(`api/clocks/${currentClock.id}`, {time_out: new Date()}) 
         .then(res => {
           setCurrentClock(null)
           updateClockList(res.data) 

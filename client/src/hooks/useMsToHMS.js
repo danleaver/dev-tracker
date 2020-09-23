@@ -1,5 +1,3 @@
-import moment from "moment";
-
 const useMsToHMS = () => {
   const convertTicker = (diff) => {
     let seconds = parseInt((diff/1000) % 60),
@@ -22,7 +20,7 @@ const useMsToHMS = () => {
     if (minutes == 0 && hours == 0){
       return "<1 minute"
     } else {
-      return hours + ` hour${hours !== 1 && "s"}, ` + minutes + ` minute${minutes !== 1 && "s" }`
+      return hours + ` hour${hours !== 1 ? "s" : ""}, ` + minutes + ` minute${(minutes !== 1) ? "s" : ""}`
     }
   };
   

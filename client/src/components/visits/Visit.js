@@ -6,7 +6,6 @@ import VisitForm from './VisitForm';
 const Visit = ({visit, contact, ...props}) => {
   const [ editing, setEditing ] = useState(false);
 
-
   const handleClick = () => {
     axios.delete(`/api/contacts/${contact.id}/visits/${visit.id}`)
       .then(res => {
@@ -29,16 +28,11 @@ const Visit = ({visit, contact, ...props}) => {
       <button onClick={toggleEdit}>Edit</button>
     </div>   
     {editing && <VisitForm contact={contact} visit={visit} updateVisit={props.updateVisit} setEditing={setEditing}/> }
-
    </Wrapper>
   )
 }
 
-
-
 const Wrapper = styled.div`
   padding: 1rem;
-  
-
 `
 export default Visit
