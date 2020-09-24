@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import EditPunchCard from './EditPunchCard';
+// import EditPunchCard from './EditPunchCard';
+import EditPunch from './EditPunch';
 
 const PunchCard = ({clock, ...props}) => {
   const [ editing, setEditing ] = useState(false);
@@ -19,11 +20,16 @@ const PunchCard = ({clock, ...props}) => {
         <button onClick={handleClick}>Edit</button>
       </Wrapper>
       {editing && 
-        <EditPunchCard 
+        // <EditPunchCard 
+        //   updatePunchCard={props.updatePunchCard} 
+        //   setEditing={setEditing} 
+        //   clock={clock}
+        // /> 
+        <EditPunch 
+          clock={clock}
           updatePunchCard={props.updatePunchCard} 
           setEditing={setEditing} 
-          clock={clock}
-        /> 
+        />
       }
     </>
   )
