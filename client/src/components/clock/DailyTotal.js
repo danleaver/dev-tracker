@@ -1,13 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import  useMsToHMS  from '../../hooks/useMsToHMS';
+import { TimeInContext } from '../../providers/TimeInProvider';
 
 
 const DailyTotal = () => {
+  const context = useContext(TimeInContext);
   const [ clockList, setClockList ] = useState([]);
   const [ total, setTotal ] = useState();
+  const [ sumState, setSumState ] = useState(null);
   const { convertReadable } = useMsToHMS();
+
 
   const end_date = new Date().toISOString()
   const start_date = new Date().toISOString()
@@ -25,25 +29,26 @@ const DailyTotal = () => {
           }
         })
         currentClocks.map(clock => {
-          console.log("hitting map")
           arr.push(new Date(clock.time_out) - new Date(clock.time_in))
         })
         const sum = arr.reduce((a,b) => {
           return a + b
         }, 0)
-    
+  
         setTotal(convertReadable(sum))
+        setSumState(sum)
         setClockList(currentClocks)
       })
       .catch(console.log)
-
-
   }, [])
 
   useEffect(() => {
+    if (sumState){
+      setTotal(convertReadable(sumState+context.totalTimeIn)) 
+    }
+  }, [context.totalTimeIn])
 
-  }, [clockList])
-
+  
     return (
       <Wrapper>
             Daily Total: {total}

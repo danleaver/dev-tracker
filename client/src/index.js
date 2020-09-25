@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { TimeInProvider } from './providers/TimeInProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <TimeInProvider>
+      <App />
+    </TimeInProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import styled from 'styled-components';
 import useMsToHMS from '../../hooks/useMsToHMS';
+import { TimeInContext } from '../../providers/TimeInProvider';
 
 const TimeIn = (props) => {
+  const context = useContext( TimeInContext );
   const {convertTicker} = useMsToHMS();
   const [totalTimeIn, setTotalTimeIn] = useState("");
   const time_in = new Date(props.currentClock.time_in);
@@ -18,6 +20,7 @@ const TimeIn = (props) => {
   const timer = () => {
     let diff = Date.now() - time_in
     setTotalTimeIn(convertTicker(diff))
+    context.setTotalTimeIn(diff)
   }
 
   return (
@@ -27,8 +30,8 @@ const TimeIn = (props) => {
   )
 }
 
-
 const Wrapper = styled.div`
   padding: 0rem 1rem;
 `
+
 export default TimeIn
