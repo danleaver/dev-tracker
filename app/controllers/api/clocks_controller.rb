@@ -3,8 +3,8 @@ class Api::ClocksController < ApplicationController
     render json: Clock.order(created_at: :desc)
   end
 
-  def recent
-    render json: Clock.order(created at ascending).limit(1)
+  def search_range
+    render json: Clock.search(params[:start_date], params[:end_date])
   end
 
   def show

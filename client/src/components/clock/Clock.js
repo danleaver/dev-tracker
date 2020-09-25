@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import TimeIn from './TimeIn';
-import ClockList from './ClockList';
+import History from './History';
+import DailyTotal from './DailyTotal';
 
 const Clock = () => {
   const [ currentClock, setCurrentClock ] = useState(null);
@@ -34,14 +35,45 @@ const Clock = () => {
       axios.post('/api/clocks', {time_in: new Date()}) 
         .then(res => setCurrentClock(res.data))
         .catch(console.log)
-    } else {
-      axios.patch(`api/clocks/${currentClock.id}`, {time_out: new Date()}) 
-        .then(res => {
-          setCurrentClock(null)
-          updateClockList(res.data) 
-        })
-        .catch(console.log)
+    } else checkRollOver();
+  }
+
+  let j = 0
+  const checkRollOver = (timeIn = currentClock.time_in) =>{
+    let time_in = new Date(timeIn).toLocaleDateString() 
+    if (time_in === new Date().toLocaleDateString()) {
+      clockOutRollover(new Date())
+    } else if (j < 1000) { //prevent infinite loops
+      let nextDay = new Date(time_in)
+      nextDay.setDate(nextDay.getDate() + 1);
+      let v = new Date(nextDay.getTime() - 1)
+      j++
+      clockOutRollover(v)
+        .then(clockInRollOver(nextDay))
     }
+  }
+
+  const clockInRollOver = (midnight) => {
+    axios.post('/api/clocks', {time_in: midnight}) 
+      .then(res => checkRollOver(res.data.time_in))
+      .catch(console.log)
+  }
+
+  let i = 0
+  const clockOutRollover = (time_out) => {
+    return new Promise((resolve, reject) => {
+      axios.patch(`api/clocks/${currentClock.id + i}`, {time_out}) 
+      .then(res => {
+        i++
+        setCurrentClock(null)
+        updateClockList(res.data) 
+        resolve()
+      })
+      .catch(err => {
+        console.log(err)
+        reject()
+      })
+    })
   }
 
   const updateClockList = (newClock) => {
@@ -65,10 +97,16 @@ const Clock = () => {
       <ButtonDiv>
         <button onClick={toggleClock}>Clock {clockedIn ? "Out" : "In"}</button>
       </ButtonDiv>
+      <div>
+        <DailyTotal />
+      </div>
+      <div>
+        HELLO WeeklyTotal
+      </div>
       <ButtonDiv>
         <button onClick={toggleHistory}>History</button>
       </ButtonDiv>
-    {showHistory && <ClockList newClock={newClock}/> }
+    {showHistory && <History newClock={newClock}/> }
    </Wrapper>
   )
 }
