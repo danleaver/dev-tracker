@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import PunchCard from './punchcard/PunchCard';
 
-const History = ({newClock, ...props}) => {
+const History = ({newCard, ...props}) => {
   const [ clockList, setClockList ] = useState(null);
 
   useEffect(() => {
@@ -24,10 +24,10 @@ const History = ({newClock, ...props}) => {
   }, [])
 
   useEffect(() => {
-    if (newClock) {
-      setClockList([newClock, ...clockList])
+    if (newCard) {
+      setClockList([newCard, ...clockList])
     }
-  }, [newClock])
+  }, [newCard])
 
   const updatePunchCard = (updatedClock) => {
     setClockList(clockList.map( a => {

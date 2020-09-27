@@ -4,64 +4,63 @@ import axios from 'axios';
 import  useMsToHMS  from '../../hooks/useMsToHMS';
 import { TimeInContext } from '../../providers/TimeInProvider';
 
-
 const DailyTotal = () => {
-  const context = useContext(TimeInContext);
-  const [ clockList, setClockList ] = useState([]);
+  const {currentClock, newCard, ...context} = useContext(TimeInContext);
+  const [ cards, setCards ] = useState([]);
   const [ total, setTotal ] = useState();
-  const [ sumState, setSumState ] = useState(null);
+  const [ sumState, setSumState ] = useState(0);
   const { convertReadable } = useMsToHMS();
-
-
-  const end_date = new Date().toISOString()
-  const start_date = new Date().toISOString()
-
-  let currentClocks = []
-  let arr = []
+  const end_date = new Date().toISOString();
+  const start_date = end_date
 
   useEffect(() => {
     axios.get(`/api/search_range/?start_date=${start_date}&end_date=${end_date}`)
       .then(res => {
-        console.log(res.data)
-        res.data.map(clock => {
-          if (clock.time_out){
-            currentClocks.push(clock)
-          }
-        })
-        currentClocks.map(clock => {
-          arr.push(new Date(clock.time_out) - new Date(clock.time_in))
-        })
-        const sum = arr.reduce((a,b) => {
-          return a + b
-        }, 0)
-  
+        setCards(res.data)
+
+        const sum = res.data.map(card => ( 
+            card.time_out &&
+              new Date(card.time_out) - new Date(card.time_in)
+          )).reduce((a,b) => a + b )
+
         setTotal(convertReadable(sum))
         setSumState(sum)
-        setClockList(currentClocks)
       })
       .catch(console.log)
   }, [])
 
   useEffect(() => {
-    if (sumState){
       setTotal(convertReadable(sumState+context.totalTimeIn)) 
-    }
   }, [context.totalTimeIn])
 
+  useEffect(() => {
+    if (currentClock && !currentClock.time_out) {
+      setCards([currentClock, ...cards])
+    }
+  }, [currentClock])
   
-    return (
-      <Wrapper>
-            Daily Total: {total}
-            {clockList.map(clock => (
-        
-                <Flex>
-                  {clock.time_in}
-                  <Spacer width={"100px"} />
-                  {clock.time_out}
-                </Flex>
-              
-            ))}
-      </Wrapper>
+  useEffect(()=> {
+    if (newCard){
+      setCards(cards.map(a => {
+        if (a.id === newCard.id){
+          return newCard
+        } 
+        return a
+      }))
+    }
+  }, [newCard])
+
+  return (
+    <Wrapper>
+      Daily Total: {total}
+      {cards.map(card => (
+        <Flex>
+          {new Date(card.time_in).toLocaleTimeString()}
+          <Spacer width={"100px"} />
+          {card.time_out ? new Date(card.time_out).toLocaleTimeString() : "Clocked In :)" }
+        </Flex>
+      ))}
+    </Wrapper>
   )
 }
 

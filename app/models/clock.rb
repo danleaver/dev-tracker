@@ -4,6 +4,6 @@ class Clock < ApplicationRecord
     x = Date.parse(start_date) 
     y = Date.parse(end_date) + 1.day
 
-    Clock.where(time_out: x..y) 
+    Clock.where(time_in: x..y).order(created_at: :desc)
   end
 end
