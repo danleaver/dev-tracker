@@ -6,6 +6,7 @@ import HistoryByPage from './HistoryByPage';
 
 const History = ({newCard, ...props}) => {
   const [ cards, setCards ] = useState(null);
+  const [ resultsPerPage, setResultsPerPage ] = useState(10);
 
   useEffect(() => {
     axios.get('/api/clocks')
@@ -33,27 +34,31 @@ const History = ({newCard, ...props}) => {
     )
   }
 
+  const handleChange = (e) => {
+    setResultsPerPage(e.target.value)
+    renderCards()
+  }
   const renderCards = () => {
     const k = cards.length
-    let resultsPerPage = 10
-    let numOfPages = Math.floor(k/resultsPerPage) + (k % resultsPerPage > 0 && 1)
+    let rpp = resultsPerPage
+    let numOfPages = Math.floor(k/rpp) + (k % rpp > 0 && 1)
     let arr = Array.from(Array(numOfPages), () => []);
     for (let i = 0; i < numOfPages; i++){
-      for (let j = 0; j < resultsPerPage; j++) {
-        arr[i].push(cards[j+resultsPerPage*i])
+      for (let j = 0; j < rpp; j++) {
+        arr[i].push(cards[j+rpp*i])
       }
     }
-    arr[numOfPages -1].splice(-(k % resultsPerPage))
+    arr[numOfPages -1].splice(-(rpp - (k % rpp)))
 
     return(
       <>
-        <HistoryByPage arr={arr} updatePunchCard={updatePunchCard}/>
-        {/* <br />
-        <br />
-        <br />
-        {cards.map(clock => (
-          <PunchCard key={clock.id} clock={clock} updatePunchCard={updatePunchCard}/>
-        ))} */}
+        <HistoryByPage arr={arr} updatePunchCard={updatePunchCard} resultsPerPage={resultsPerPage} cards={cards}/>
+        Results Per Page:
+        <select onChange={handleChange}>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
       </>
     )
   }

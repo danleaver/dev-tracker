@@ -91,7 +91,6 @@ const Clock = () => {
     setNewCard(null)
     setShowHistory(!showHistory)
   }
-  
   return (
    <Wrapper>
       {currentCard && !currentCard.time_out && 
@@ -113,6 +112,7 @@ const Clock = () => {
         <button onClick={toggleHistory}>History</button>
       </ButtonDiv>
     {showHistory && <History newCard={newCard}/> }
+
    </Wrapper>
   )
 }

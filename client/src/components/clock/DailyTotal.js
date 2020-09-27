@@ -16,6 +16,7 @@ const DailyTotal = () => {
   useEffect(() => {
     axios.get(`/api/search_range/?start_date=${start_date}&end_date=${end_date}`)
       .then(res => {
+        console.log(res.data)
         setCards(res.data)
 
         const sum = res.data.map(card => ( 
@@ -34,7 +35,7 @@ const DailyTotal = () => {
   }, [context.totalTimeIn])
 
   useEffect(() => {
-    if (currentCard && !currentCard.time_out) {
+    if (currentCard && cards.length && currentCard.id !== cards[0].id){
       setCards([currentCard, ...cards])
     }
   }, [currentCard])
@@ -53,8 +54,8 @@ const DailyTotal = () => {
   return (
     <Wrapper>
       Daily Total: {total}
-      {cards.map(card => (
-        <Flex>
+      {cards.map((card, i) => (
+        <Flex key={i}>
           {new Date(card.time_in).toLocaleTimeString()}
           <Spacer width={"100px"} />
           {card.time_out ? new Date(card.time_out).toLocaleTimeString() : "Clocked In :)" }

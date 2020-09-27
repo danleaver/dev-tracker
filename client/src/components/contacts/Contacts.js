@@ -42,8 +42,8 @@ const Contacts = () => {
   )
 }
 
-
 const Wrapper = styled.div`
   padding: 1rem;
 `
+
 export default Contacts
