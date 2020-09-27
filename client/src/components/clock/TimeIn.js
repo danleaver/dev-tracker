@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import useMsToHMS from '../../hooks/useMsToHMS';
 import { TimeInContext } from '../../providers/TimeInProvider';
 
-const TimeIn = (props) => {
+const TimeIn = () => {
   const context = useContext( TimeInContext );
   const {convertTicker} = useMsToHMS();
   const [totalTimeIn, setTotalTimeIn] = useState("");
-  const time_in = new Date(props.currentClock.time_in);
+  const time_in = new Date(context.currentCard.time_in);
 
   useEffect(()=>{
       timer()

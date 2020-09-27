@@ -7,31 +7,28 @@ import DailyTotal from './DailyTotal';
 import { TimeInContext } from '../../providers/TimeInProvider';
 
 const Clock = () => {
-  const {currentClock, setCurrentClock, newCard, setNewCard, ...context} = useContext(TimeInContext);
-  // const currentClock = context.currentClock;
-  // const setCurrentClock = context.setCurrentClock;
+  const {currentCard, setCurrentCard, newCard, setNewCard, ...context} = useContext(TimeInContext);
   const [ clockedIn, setClockedIn ] = useState(false);
   const [ startTime, setStartTime ] = useState(null);
-  // const [ newCard, setNewCard ] = useState(null);
   const [ showHistory, setShowHistory ] = useState(false);
 
   useEffect(()=>{
     axios.get('/api/search/clocks')
       .then(res=> {
-        setCurrentClock(res.data[0])
+        setCurrentCard(res.data[0])
       })
       .catch(console.log)
   }, [])
 
   useEffect(() => {
-    if (currentClock && !currentClock.time_out) { 
+    if (currentCard && !currentCard.time_out) { 
       setClockedIn(true)
-      let d = new Date(currentClock.time_in).toLocaleString()
+      let d = new Date(currentCard.time_in).toLocaleString()
       setStartTime(d)
     } else { 
       setClockedIn(false)
     }
-  }, [currentClock])
+  }, [currentCard])
 
   const toggleClock = () => {
     if (!clockedIn) {
@@ -40,7 +37,8 @@ const Clock = () => {
   }
 
   let j = 0  
-  const checkRollOver = (timeIn = currentClock.time_in) =>{
+
+  const checkRollOver = (timeIn = currentCard.time_in) =>{
     let time_in = new Date(timeIn).toLocaleDateString() 
     if (time_in === new Date().toLocaleDateString()) {
       clockOut(new Date())
@@ -48,39 +46,39 @@ const Clock = () => {
       let nextDay = new Date(time_in)
       nextDay.setDate(nextDay.getDate() + 1);
       let _1159pm = new Date(nextDay.getTime() - 1)
-      j++
       clockOut(_1159pm)
-      .then(clockInRollOver(nextDay))
+        .then(clockInRollOver(nextDay))
+      j++
     }
   }
   
   const clockInRollOver = (midnight) => {
     axios.post('/api/clocks', {time_in: midnight}) 
-    .then(res => checkRollOver(res.data.time_in))
-    .catch(console.log)
+      .then(res => checkRollOver(res.data.time_in))
+      .catch(console.log)
   }
   
-  let i = 0
+  let i = -1
 
   const clockOut = (time_out) => {
+    i++
     return new Promise((resolve, reject) => {
-      axios.patch(`api/clocks/${currentClock.id + i}`, {time_out}) 
-      .then(res => {
-        i++
-        setCurrentClock(null)
-        updateClockList(res.data) 
-        resolve()
-      })
-      .catch(err => {
-        console.log(err)
-        reject()
-      })
+      axios.patch(`api/clocks/${currentCard.id + i}`, {time_out}) 
+        .then(res => {
+          setCurrentCard(null)
+          updateClockList(res.data) 
+          resolve()
+        })
+        .catch(err => {
+          console.log(err)
+          reject()
+        })
     })
   }
   
   const clockIn = () =>{
     axios.post('/api/clocks', {time_in: new Date()}) 
-      .then(res => setCurrentClock(res.data))
+      .then(res => setCurrentCard(res.data))
       .catch(console.log)
   }
 
@@ -96,10 +94,10 @@ const Clock = () => {
   
   return (
    <Wrapper>
-      {currentClock && !currentClock.time_out && 
+      {currentCard && !currentCard.time_out && 
         <Flex>
             Start: {startTime}
-            <TimeIn currentClock={currentClock}/>
+            <TimeIn currentCard={currentCard}/>
         </Flex>
       }
       <ButtonDiv>
@@ -114,7 +112,7 @@ const Clock = () => {
       <ButtonDiv>
         <button onClick={toggleHistory}>History</button>
       </ButtonDiv>
-    {showHistory && <History newClock={newCard}/> }
+    {showHistory && <History newCard={newCard}/> }
    </Wrapper>
   )
 }

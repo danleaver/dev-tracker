@@ -5,7 +5,7 @@ import  useMsToHMS  from '../../hooks/useMsToHMS';
 import { TimeInContext } from '../../providers/TimeInProvider';
 
 const DailyTotal = () => {
-  const {currentClock, newCard, ...context} = useContext(TimeInContext);
+  const {currentCard, newCard, ...context} = useContext(TimeInContext);
   const [ cards, setCards ] = useState([]);
   const [ total, setTotal ] = useState();
   const [ sumState, setSumState ] = useState(0);
@@ -34,11 +34,11 @@ const DailyTotal = () => {
   }, [context.totalTimeIn])
 
   useEffect(() => {
-    if (currentClock && !currentClock.time_out) {
-      setCards([currentClock, ...cards])
+    if (currentCard && !currentCard.time_out) {
+      setCards([currentCard, ...cards])
     }
-  }, [currentClock])
-  
+  }, [currentCard])
+
   useEffect(()=> {
     if (newCard){
       setCards(cards.map(a => {

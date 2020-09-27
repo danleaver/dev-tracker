@@ -1,2 +1,2 @@
 
-Clock.create(time_in: Date.parse("2019-09-16"))
+Clock.create(time_in: Date.parse("2020-07-16"))
