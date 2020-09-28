@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-// import PunchCard from './punchcard/PunchCard';
 import HistoryByPage from './HistoryByPage';
 
 const History = ({newCard, ...props}) => {
   const [ cards, setCards ] = useState(null);
   const [ resultsPerPage, setResultsPerPage ] = useState(10);
-
+  
   useEffect(() => {
     axios.get('/api/clocks')
       .then(res => {
@@ -38,17 +37,19 @@ const History = ({newCard, ...props}) => {
     setResultsPerPage(e.target.value)
     renderCards()
   }
+
   const renderCards = () => {
     const k = cards.length
     let rpp = resultsPerPage
-    let numOfPages = Math.floor(k/rpp) + (k % rpp > 0 && 1)
+    let numOfPages = Math.ceil(k/rpp)
     let arr = Array.from(Array(numOfPages), () => []);
     for (let i = 0; i < numOfPages; i++){
       for (let j = 0; j < rpp; j++) {
         arr[i].push(cards[j+rpp*i])
       }
     }
-    arr[numOfPages -1].splice(-(rpp - (k % rpp)))
+
+    k % rpp !== 0 && arr[numOfPages -1].splice(-(rpp - (k % rpp))) 
 
     return(
       <>
@@ -59,6 +60,7 @@ const History = ({newCard, ...props}) => {
           <option value="20">20</option>
           <option value="50">50</option>
         </select>
+        <input onChange={handleChange} placeholder="results per page" />
       </>
     )
   }

@@ -3,9 +3,13 @@ import styled from 'styled-components';
 import axios from 'axios';
 import  useMsToHMS  from '../../hooks/useMsToHMS';
 import { TimeInContext } from '../../providers/TimeInProvider';
+import { CardContext } from '../../providers/CardProvider';
+
 
 const DailyTotal = () => {
-  const {currentCard, newCard, ...context} = useContext(TimeInContext);
+  const {currentCard, newCard, ...context} = useContext(CardContext);
+  const {totalTimeIn} = useContext(TimeInContext);
+
   const [ cards, setCards ] = useState([]);
   const [ total, setTotal ] = useState();
   const [ sumState, setSumState ] = useState(0);
@@ -31,8 +35,8 @@ const DailyTotal = () => {
   }, [])
 
   useEffect(() => {
-      setTotal(convertReadable(sumState+context.totalTimeIn)) 
-  }, [context.totalTimeIn])
+      setTotal(convertReadable(sumState+totalTimeIn)) 
+  }, [totalTimeIn])
 
   useEffect(() => {
     if (currentCard && cards.length && currentCard.id !== cards[0].id){

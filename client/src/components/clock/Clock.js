@@ -4,10 +4,10 @@ import axios from 'axios';
 import TimeIn from './TimeIn';
 import History from './History';
 import DailyTotal from './DailyTotal';
-import { TimeInContext } from '../../providers/TimeInProvider';
+import { CardContext } from '../../providers/CardProvider';
 
 const Clock = () => {
-  const {currentCard, setCurrentCard, newCard, setNewCard, ...context} = useContext(TimeInContext);
+  const {currentCard, setCurrentCard, newCard, setNewCard, ...context} = useContext(CardContext);
   const [ clockedIn, setClockedIn ] = useState(false);
   const [ startTime, setStartTime ] = useState(null);
   const [ showHistory, setShowHistory ] = useState(false);
