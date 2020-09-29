@@ -4,29 +4,35 @@ import axios from 'axios';
 // import EditPunchCard from './EditPunchCard';
 import EditPunch from './EditPunch';
 
-const PunchCard = ({clock, ...props}) => {
+const PunchCard = ({card, ...props}) => {
   const [ editing, setEditing ] = useState(false);
   
   const handleClick = (e) => {
     setEditing(!editing)
   }
 
+  const handleDelete = () => {
+    axios.delete(`/api/clocks/${card.id}`)
+      .then(props.removeCard(card.id))
+      .catch(console.log)
+  }
   return (
     <>
       <Wrapper>
-        In: {new Date(clock.time_in).toLocaleString()}
+        In: {new Date(card.time_in).toLocaleString()}
         <StyledDiv/>
-        Out: {clock.time_out && new Date(clock.time_out).toLocaleString()}
+        Out: {card.time_out && new Date(card.time_out).toLocaleString()}
         <button onClick={handleClick}>Edit</button>
+        <button onClick={handleDelete}>Delete</button>
       </Wrapper>
       {editing && 
         // <EditPunchCard 
         //   updatePunchCard={props.updatePunchCard} 
         //   setEditing={setEditing} 
-        //   clock={clock}
+        //   card={card}
         // /> 
         <EditPunch 
-          clock={clock}
+          card={card}
           updatePunchCard={props.updatePunchCard} 
           setEditing={setEditing} 
         />

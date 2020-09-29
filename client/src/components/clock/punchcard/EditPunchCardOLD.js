@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
+/**
+ * NOT BEING USED ANYMORE, BUT HERE FOR EDUCATIONAL PURPOSES
+ *
+ */
 const EditPunchCard = (props) => {
   const clockIn = new Date(props.clock.time_in) 
   const clockOut = new Date(props.clock.time_out) 

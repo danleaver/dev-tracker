@@ -24,10 +24,12 @@ const HistoryByPage = ({arr, ...props}) => {
 
   const handleClick = (e) => setPage(e.target.name);
 
+
+
   return (
     <Wrapper>
       {arr[page] && arr[page].map( (card, j) => (
-        <PunchCard clock={card} key={j} updatePunchCard={props.updatePunchCard}/>
+        <PunchCard card={card} key={j} removeCard={props.removeCard} updatePunchCard={props.updatePunchCard}/>
       ))}
       <Flex>
         {arr.map((p, i) => (

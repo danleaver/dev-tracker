@@ -4,13 +4,13 @@ import DateTimePicker from 'react-datetime-picker';
 
 import axios from 'axios';
  
-const EditPunch = ({clock, ...props}) => {
-  const [time_in, onChangeIn] = useState(new Date(clock.time_in));
-  const [time_out, onChangeOut] = useState(new Date(clock.time_out));
+const EditPunch = ({card, ...props}) => {
+  const [time_in, onChangeIn] = useState(new Date(card.time_in));
+  const [time_out, onChangeOut] = useState(new Date(card.time_out));
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.patch(`/api/clocks/${clock.id}`, {time_in, time_out})
+    axios.patch(`/api/clocks/${card.id}`, {time_in, time_out})
       .then(res => {
         props.updatePunchCard(res.data)
         props.setEditing(false)

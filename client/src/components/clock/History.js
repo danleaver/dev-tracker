@@ -29,16 +29,18 @@ const History = ({newCard, ...props}) => {
       if (a.id === updatedClock.id) {
         return updatedClock
       } else return a
-    })
-    )
+    }))
   }
 
+  const removeCard = (id) => setCards(cards.filter(a => a.id !== id));
+  
   const handleChange = (e) => {
     setResultsPerPage(e.target.value)
     renderCards()
   }
 
   const renderCards = () => {
+    console.log("renderCards FIRED!!")
     const k = cards.length
     let rpp = resultsPerPage
     let numOfPages = Math.ceil(k/rpp)
@@ -53,7 +55,7 @@ const History = ({newCard, ...props}) => {
 
     return(
       <>
-        <HistoryByPage arr={arr} updatePunchCard={updatePunchCard} resultsPerPage={resultsPerPage} cards={cards}/>
+        <HistoryByPage arr={arr} removeCard={removeCard} updatePunchCard={updatePunchCard} resultsPerPage={resultsPerPage} cards={cards}/>
         Results Per Page:
         <select onChange={handleChange}>
           <option value="10">10</option>
