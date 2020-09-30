@@ -5,15 +5,16 @@ import TimeIn from './TimeIn';
 import History from './History';
 import DailyTotal from './DailyTotal';
 import { CardContext } from '../../providers/CardProvider';
+import Task from '../task/Task';
 
 const Clock = () => {
-  const {currentCard, setCurrentCard, newCard, setNewCard, ...context} = useContext(CardContext);
+  const { currentCard, setCurrentCard, newCard, setNewCard, ...context } = useContext(CardContext);
   const [ clockedIn, setClockedIn ] = useState(false);
   const [ startTime, setStartTime ] = useState(null);
   const [ showHistory, setShowHistory ] = useState(false);
 
   useEffect(()=>{
-    axios.get('/api/search/clocks')
+    axios.get('/api/search/cards')
       .then(res=> {
         setCurrentCard(res.data[0])
       })
@@ -53,7 +54,7 @@ const Clock = () => {
   }
   
   const clockInRollOver = (midnight) => {
-    axios.post('/api/clocks', {time_in: midnight}) 
+    axios.post('/api/cards', {time_in: midnight}) 
       .then(res => checkRollOver(res.data.time_in))
       .catch(console.log)
   }
@@ -63,7 +64,7 @@ const Clock = () => {
   const clockOut = (time_out) => {
     i++
     return new Promise((resolve, reject) => {
-      axios.patch(`api/clocks/${currentCard.id + i}`, {time_out}) 
+      axios.patch(`api/cards/${currentCard.id + i}`, {time_out}) 
         .then(res => {
           setCurrentCard(null)
           updateClockList(res.data) 
@@ -77,7 +78,7 @@ const Clock = () => {
   }
   
   const clockIn = () =>{
-    axios.post('/api/clocks', {time_in: new Date()}) 
+    axios.post('/api/cards', {time_in: new Date()}) 
       .then(res => setCurrentCard(res.data))
       .catch(console.log)
   }
@@ -93,11 +94,15 @@ const Clock = () => {
   }
   return (
    <Wrapper>
+      
       {currentCard && !currentCard.time_out && 
-        <Flex>
-            Start: {startTime}
-            <TimeIn currentCard={currentCard}/>
-        </Flex>
+        <>
+          <Flex>
+              Start: {startTime}
+              <TimeIn currentCard={currentCard}/>
+          </Flex>
+          <Task currentCard={currentCard}/>
+        </>
       }
       <ButtonDiv>
         <button onClick={toggleClock}>Clock {clockedIn ? "Out" : "In"}</button>

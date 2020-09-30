@@ -8,7 +8,7 @@ const History = ({newCard, ...props}) => {
   const [ resultsPerPage, setResultsPerPage ] = useState(10);
   
   useEffect(() => {
-    axios.get('/api/clocks')
+    axios.get('/api/cards')
       .then(res => {
         setCards(res.data.filter(a => a.time_out))
       })

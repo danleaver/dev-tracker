@@ -12,8 +12,8 @@ const PunchCard = ({card, ...props}) => {
   }
 
   const handleDelete = () => {
-    axios.delete(`/api/clocks/${card.id}`)
-      .then(props.removeCard(card.id))
+    axios.delete(`/api/cards/${card.id}`)
+      .then(res => props.removeCard(card.id))
       .catch(console.log)
   }
   return (

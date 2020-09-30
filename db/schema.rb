@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_21_010441) do
+ActiveRecord::Schema.define(version: 2020_09_30_195402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cards", force: :cascade do |t|
+    t.datetime "time_in"
+    t.datetime "time_out"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "clocks", force: :cascade do |t|
     t.datetime "time_in"
@@ -31,6 +38,23 @@ ActiveRecord::Schema.define(version: 2020_09_21_010441) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.string "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "project_id"
+    t.string "details"
+    t.string "name"
+    t.bigint "card_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_tasks_on_card_id"
+  end
+
   create_table "visits", force: :cascade do |t|
     t.datetime "date"
     t.text "details"
@@ -40,5 +64,6 @@ ActiveRecord::Schema.define(version: 2020_09_21_010441) do
     t.index ["contact_id"], name: "index_visits_on_contact_id"
   end
 
+  add_foreign_key "tasks", "cards"
   add_foreign_key "visits", "contacts"
 end

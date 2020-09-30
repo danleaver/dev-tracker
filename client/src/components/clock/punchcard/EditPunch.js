@@ -10,7 +10,7 @@ const EditPunch = ({card, ...props}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.patch(`/api/clocks/${card.id}`, {time_in, time_out})
+    axios.patch(`/api/cards/${card.id}`, {time_in, time_out})
       .then(res => {
         props.updatePunchCard(res.data)
         props.setEditing(false)
