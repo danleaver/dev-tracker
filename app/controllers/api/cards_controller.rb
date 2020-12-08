@@ -37,7 +37,7 @@ class Api::CardsController < ApplicationController
   private 
 
   def card_params
-    params.require(:card).permit(:time_in, :time_out)
+    params.require(:card).permit(:time_in, :time_out, :details, :project_id)
 
   end
 end

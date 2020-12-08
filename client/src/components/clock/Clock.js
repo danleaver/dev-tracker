@@ -5,13 +5,14 @@ import TimeIn from './TimeIn';
 import History from './History';
 import DailyTotal from './DailyTotal';
 import { CardContext } from '../../providers/CardProvider';
-import Task from '../task/Task';
+import CardDetails from '../card/CardDetails';
 
 const Clock = () => {
   const { currentCard, setCurrentCard, newCard, setNewCard, ...context } = useContext(CardContext);
   const [ clockedIn, setClockedIn ] = useState(false);
   const [ startTime, setStartTime ] = useState(null);
   const [ showHistory, setShowHistory ] = useState(false);
+  const [ project_id, setProjectId ] = useState(1);
 
   useEffect(()=>{
     axios.get('/api/search/cards')
@@ -98,10 +99,10 @@ const Clock = () => {
       {currentCard && !currentCard.time_out && 
         <>
           <Flex>
+          <CardDetails currentCard={currentCard}/>
               Start: {startTime}
               <TimeIn currentCard={currentCard}/>
           </Flex>
-          <Task currentCard={currentCard}/>
         </>
       }
       <ButtonDiv>

@@ -1,5 +1,6 @@
 class Card < ApplicationRecord
-  has_one :task, dependent: :destroy
+  has_many :projects, through: :project_cards
+  has_many :project_cards, dependent: :destroy
   
   def self.search(start_date, end_date)
     

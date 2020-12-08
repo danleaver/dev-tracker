@@ -7,7 +7,7 @@ const Home = () => (
    <Wrapper>
     Web Development Work Tracker
     <Clock/>
-    <Contacts />
+    {/* <Contacts /> */}
    </Wrapper>
 )
 

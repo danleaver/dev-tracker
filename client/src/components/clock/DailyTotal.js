@@ -4,6 +4,7 @@ import axios from 'axios';
 import  useMsToHMS  from '../../hooks/useMsToHMS';
 import { TimeInContext } from '../../providers/TimeInProvider';
 import { CardContext } from '../../providers/CardProvider';
+import CardDetails from '../card/CardDetails';
 
 
 const DailyTotal = () => {
@@ -20,7 +21,7 @@ const DailyTotal = () => {
   useEffect(() => {
     axios.get(`/api/search_range/?start_date=${start_date}&end_date=${end_date}`)
       .then(res => {
-        console.log(res.data)
+        // console.log("Daily Cards:", res.data)
         setCards(res.data)
 
         const sum = res.data.map(card => ( 
@@ -60,6 +61,7 @@ const DailyTotal = () => {
       Daily Total: {total}
       {cards.map((card, i) => (
         <Flex key={i}>
+          <CardDetails currentCard={card} />
           {new Date(card.time_in).toLocaleTimeString()}
           <Spacer width={"100px"} />
           {card.time_out ? new Date(card.time_out).toLocaleTimeString() : "Clocked In :)" }

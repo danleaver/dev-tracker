@@ -1,9 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  time_in: 2020-09-30 13:20:31
-  time_out: 2020-09-30 13:20:31
+  time_in: 2020-10-01 19:06:03
+  time_out: 2020-10-01 19:06:03
+  details: MyString
 
 two:
-  time_in: 2020-09-30 13:20:31
-  time_out: 2020-09-30 13:20:31
+  time_in: 2020-10-01 19:06:03
+  time_out: 2020-10-01 19:06:03
+  details: MyString

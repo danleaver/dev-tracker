@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_30_195402) do
+ActiveRecord::Schema.define(version: 2020_10_02_010607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,24 +18,18 @@ ActiveRecord::Schema.define(version: 2020_09_30_195402) do
   create_table "cards", force: :cascade do |t|
     t.datetime "time_in"
     t.datetime "time_out"
+    t.string "details"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "clocks", force: :cascade do |t|
-    t.datetime "time_in"
-    t.datetime "time_out"
+  create_table "project_cards", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "card_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "contacts", force: :cascade do |t|
-    t.string "name"
-    t.string "phone"
-    t.text "details"
-    t.string "url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_project_cards_on_card_id"
+    t.index ["project_id"], name: "index_project_cards_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -45,25 +39,6 @@ ActiveRecord::Schema.define(version: 2020_09_30_195402) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tasks", force: :cascade do |t|
-    t.bigint "project_id"
-    t.string "details"
-    t.string "name"
-    t.bigint "card_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["card_id"], name: "index_tasks_on_card_id"
-  end
-
-  create_table "visits", force: :cascade do |t|
-    t.datetime "date"
-    t.text "details"
-    t.bigint "contact_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["contact_id"], name: "index_visits_on_contact_id"
-  end
-
-  add_foreign_key "tasks", "cards"
-  add_foreign_key "visits", "contacts"
+  add_foreign_key "project_cards", "cards"
+  add_foreign_key "project_cards", "projects"
 end

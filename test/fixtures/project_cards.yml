@@ -1,13 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  project_id: 
-  details: MyString
-  name: MyString
+  project: one
   card: one
 
 two:
-  project_id: 
-  details: MyString
-  name: MyString
+  project: two
   card: two
